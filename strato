@@ -188,7 +188,14 @@ function makeCert {
   read -p "Password: " -s ORGPASSWORD
   echo ""
   echo "Requesting certificate for this node..."
-  curl -X POST http://localhost:8080/strato-api/eth/v1.2/certRequest -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJWY0N4SEpnUjFOdnJ4UWR5QXhQcEI5VEowM205SVRDdWt0b1JfTENVSE1VIn0.eyJqdGkiOiIzNWZmMWRjZC02ODVhLTRhMjUtOTg1Ny1iMTg0NTEyYTkyZDEiLCJleHAiOjIwMjc5NjQwNzIsIm5iZiI6MCwiaWF0IjoxNTk1OTY0MDcyLCJpc3MiOiJodHRwczovL2tleWNsb2FrLmJsb2NrYXBwcy5uZXQvYXV0aC9yZWFsbXMvc3RyYXRvLWRldmVsIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImU3NWY5OGRhLWNjNzUtNGVlMy04OWUxLTFkMDY2YmMzZDcyOCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImRldi1pbmZpbml0ZSIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6Ijc0YzBlZDhjLTBkYWEtNDRkYS04MzZmLTA0N2UwODgxOTY1NyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfSwiZGV2LWluZmluaXRlIjp7InJvbGVzIjpbInVtYV9wcm90ZWN0aW9uIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImNsaWVudElkIjoiZGV2LWluZmluaXRlIiwiY2xpZW50SG9zdCI6IjY3LjI0NC4xMDQuNzUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC1kZXYtaW5maW5pdGUiLCJjbGllbnRBZGRyZXNzIjoiNjcuMjQ0LjEwNC43NSIsImVtYWlsIjoic2VydmljZS1hY2NvdW50LWRldi1pbmZpbml0ZUBwbGFjZWhvbGRlci5vcmcifQ.XdFr9R1lAaAnNKi6i_OH31FI7QxA60VAWDWMReVpkZ6j1xlGhqbZ7syWcS1-B7QTi-uHBv1RhqWDguaOgXwKWjV-GograCx-Qxq3y395CTGRrA4qa3k33W_NRh34Lx9dHz9V1nQNVYxHrVjZ9pabE5YQYrbWXEpzeVhfiLv5hANy6iXfjXIqPBMVawtKwg2yA0rWMANDTLjySQDahW6NFSwh6D4NOMsm7_U6tSnqRBYKXGKaogZ5ZBQmCpqDbAqaM4uY7a2lWtbsEtF9o6ANvVf2B4jMtw9RYEYQY4fdF3YZunJuHaxZKAdIHE0E5SxfcdIvbR33foJOqm3UVba1qw" -H "Content-Type: application/json" -d  "{\"username\":\"$ORGUSERNAME\", \"password\":\"$ORGPASSWORD\"}"
+  response=$(curl -s -X POST http://localhost:8080/strato-api/eth/v1.2/certRequest -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJWY0N4SEpnUjFOdnJ4UWR5QXhQcEI5VEowM205SVRDdWt0b1JfTENVSE1VIn0.eyJqdGkiOiIzNWZmMWRjZC02ODVhLTRhMjUtOTg1Ny1iMTg0NTEyYTkyZDEiLCJleHAiOjIwMjc5NjQwNzIsIm5iZiI6MCwiaWF0IjoxNTk1OTY0MDcyLCJpc3MiOiJodHRwczovL2tleWNsb2FrLmJsb2NrYXBwcy5uZXQvYXV0aC9yZWFsbXMvc3RyYXRvLWRldmVsIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImU3NWY5OGRhLWNjNzUtNGVlMy04OWUxLTFkMDY2YmMzZDcyOCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImRldi1pbmZpbml0ZSIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6Ijc0YzBlZDhjLTBkYWEtNDRkYS04MzZmLTA0N2UwODgxOTY1NyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfSwiZGV2LWluZmluaXRlIjp7InJvbGVzIjpbInVtYV9wcm90ZWN0aW9uIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImNsaWVudElkIjoiZGV2LWluZmluaXRlIiwiY2xpZW50SG9zdCI6IjY3LjI0NC4xMDQuNzUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC1kZXYtaW5maW5pdGUiLCJjbGllbnRBZGRyZXNzIjoiNjcuMjQ0LjEwNC43NSIsImVtYWlsIjoic2VydmljZS1hY2NvdW50LWRldi1pbmZpbml0ZUBwbGFjZWhvbGRlci5vcmcifQ.XdFr9R1lAaAnNKi6i_OH31FI7QxA60VAWDWMReVpkZ6j1xlGhqbZ7syWcS1-B7QTi-uHBv1RhqWDguaOgXwKWjV-GograCx-Qxq3y395CTGRrA4qa3k33W_NRh34Lx9dHz9V1nQNVYxHrVjZ9pabE5YQYrbWXEpzeVhfiLv5hANy6iXfjXIqPBMVawtKwg2yA0rWMANDTLjySQDahW6NFSwh6D4NOMsm7_U6tSnqRBYKXGKaogZ5ZBQmCpqDbAqaM4uY7a2lWtbsEtF9o6ANvVf2B4jMtw9RYEYQY4fdF3YZunJuHaxZKAdIHE0E5SxfcdIvbR33foJOqm3UVba1qw" -H "Content-Type: application/json" -d  "{\"username\":\"$ORGUSERNAME\", \"password\":\"$ORGPASSWORD\"}")
+  exit_status=$?
+  if [[ "$exit_status" != "0" ]] || [[ $response == "Error"* ]] ; then
+    echo "Failed to generated certificate. License-server response: $response"
+    echo "curl exit status: $exit_status"
+  else
+    echo "Cert stored in container at filepath: $response"
+  fi
 }
 
 if [ ! -f $(pwd)/strato ]; then
@@ -576,14 +583,10 @@ while ! [[ -n $(docker ps -q -f name=${hc_container} -f health=healthy) ]];  do
 done
 printf "\n"
 
-# TODO: make this loop until the cert is generated
 if test -f "$CERT_FILE"; then
   echo "Node certificate exists already, skipping certificate request..."
 else
   if [ ${requires_cert} = true ]; then
-    echo "Starting license server..."
-    docker exec strato_strato_1 license-server &
-
     makeCert
   fi
 fi
