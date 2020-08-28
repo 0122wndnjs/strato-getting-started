@@ -348,6 +348,8 @@ if [ "$SMD_MODE" = "enterprise" ] && [ -n "${EXT_STORAGE_S3_BUCKET}" ]; then
   fi
 fi
 
+export gasOn=${gasOn:-true}
+
 # Process old OAUTH var names - for backwards-compatibility
 if [ "$OAUTH_JWT_VALIDATION_ENABLED" = "true" ]; then
   if [ "$OAUTH_STRATO42_FALLBACK" = "true" ]; then
@@ -371,6 +373,7 @@ if [ "$OAUTH_ENABLED" = true ]; then
     exit 13
   fi
 fi
+
 
 echo "" && echo "*** Common Config ***"
 echo "NODE_HOST: $NODE_HOST"
