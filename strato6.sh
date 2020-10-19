@@ -67,6 +67,8 @@ ssl                - (default: false) [true|false] to run the node with SSL/TLS;
 sslCertFileType    - (default: crt) [pem|crt] the SSL certificate type and file extension (should be accessible in ./ssl/certs/ while deploying);
 authBasic          - (default: false) [true|false] use basic access authentication for dashboard and APIs;
 uiPassword         - (default: admin) the basic auth password for 'admin' user, ignored when used with authBasic=false;
+vwpass             - when upgrading from <6.0, the vault-wrapper password for migration script
+privkey            - when upgrading from <6.0, the private key for migration script
 EXT_STORAGE_S3_BUCKET             - enables external storage feature; the AWS S3 bucket name to use as the blockchain data external storage;
 EXT_STORAGE_S3_ACCESS_KEY_ID      - the access key ID for AWS S3 bucket provided;
 EXT_STORAGE_S3_SECRET_ACCESS_KEY  - the secret access key for AWS S3 bucket provided;
@@ -166,6 +168,12 @@ function fetchLogs {
     withdb_flag="--db-dump"
   fi
   python fetchlogs ${withdb_flag}
+}
+
+function migrate(privkey,vwpass) {
+  echo -e "${Yellow}Running STRATO with upgrade migration${NC}"
+  docker exec strato_strato_1 migrate-nodekey --pw=${vwpass} --key=${privkey}
+  docker exec strato_strato_1 migrate-salt --pw=${vwpass}
 }
 
 function setPassword {
@@ -594,7 +602,13 @@ ${docker_compose} -f docker-compose-temp.yml up -d --remove-orphans
 # SET PASSWORD FOR VAULT (EVEN NON-OAUTH NODES NEED THIS, SINCE STRATO-CORE USES VAULT)
 setPassword
 
+# IF UPGRADE VARIABLES FOR PRIVATE KEY AND VAULT WRAPPER PASSWORD ARE PASSED, RUN THE MIGRATION SCRIPT
+if ["$privKey" ] && ["$vwpass" ]; then; 
+  migrate(privkey,vwpass) 
+fi
+
 # WAIT FOR STRATO TO RUN
+
 started=$(date +%s)
 timeout=180
 hc_container=$(${docker_compose} ps | grep '_nginx_' | awk '{print $1}')
