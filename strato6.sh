@@ -78,6 +78,7 @@ OAUTH_CLIENT_SECRET         - (required if OAUTH_ENABLED=true) Client Secret for
 OAUTH_JWT_USERNAME_PROPERTY - (default: email) The name of property of JWT access token payload to be used as STRATO user name;
 OAUTH_SCOPE                 - (default: 'openid email profile') The openid scopes used in session cookie verification (alter for custom OAUTH_JWT_USERNAME_PROPERTY only, refer to your OAuth provider's documentation)
 OAUTH_STRATO42_FALLBACK     - (default: false) - STRATO v4.2 OAuth compatibility mode ('OAUTH_JWT_VALIDATION_' config vars used, no OAuth login feature for UIs);
+EVM_COMPATIBLE              - (default: false) - turn off added enhancements to the basic Ethereum protocol
 "
 }
 
@@ -380,6 +381,7 @@ export SMD_MODE=${SMD_MODE:-enterprise}
 
 export isAdmin=${isAdmin:-false}
 
+export EVM_COMPATIBLE=${EVM_COMPATIBLE:-false}
 
 # BEGIN # Vars bloc for backwards-compatibility with STRATO 4.2 and older
 export BLOC_URL=${BLOC_URL:-${http_protocol}://$NODE_HOST/bloc/v2.2}
@@ -474,7 +476,7 @@ then
   export generateKey=${generateKey:-true}
   export isAdmin=true
   export isRootNode=true
-  
+
   if [[ $(docker ps -a | grep strato_strato_1) ]]; then
     echo -e "${BYellow}Updating the existing STRATO Single node instance - getting it's blockstanbul variables...${NC}"
     STRATO_ENV_VARS=$(docker inspect --format='{{range .Config.Env}}{{println .}}{{end}}' strato_strato_1)
@@ -482,7 +484,7 @@ then
     export validators=$(echo "${STRATO_ENV_VARS}" | grep validators | awk -F"alidators=" '{print $2}')
     export blockstanbulPrivateKey=$(echo "${STRATO_ENV_VARS}" | grep blockstanbulPrivateKey | awk -F"ivateKey=" '{print $2}')
     export generateKey=false
-    
+
     if [[ -n "$blockstanbulPrivateKey" ]]; then
       echo -e "\n${Red}blockstanbulPrivateKey has been retrieved - you must migrate this key using migrate-nodekey once STRATO is up.${NC}"
       echo -e "The key:${Green} $blockstanbulPrivateKey${NC}\n"
@@ -508,12 +510,12 @@ else
     if [[ ${generateKey} = false ]]; then
       echo -e "\n${BYellow}WARNING: STRATO was started with generateKey=false. The node will not start until you manually insert a key into the vault using the migrate-nodekey script${NC}"
     fi
- 
+
     if [[ -n "$extraFaucets" ]]; then
       echo -e "\n${BYellow}WARNING: STRATO was started with extraFaucets. This variable is deprecated, unless you are joining an existing network from before STRATO 6.0${NC}"
       export extraFaucets=${extraFaucets}
     fi
-   
+
     export blockstanbul=true
     export validators=${validators}
     export blockstanbulAdmins=${blockstanbulAdmins}
